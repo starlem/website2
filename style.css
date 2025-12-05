@@ -1,5 +1,4 @@
 :root {
-  --bg: #f7f9fc;
   --accent: #0366d6;
   --text: #0a0a0a;
   --page-bg: var(--bg); /* page background variable we will update from JS */
