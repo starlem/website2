@@ -15,7 +15,7 @@ html,body {
 
 header {
   position: relative; /* needed for the pseudo-element overlay */
-  background-image: url("bgimg1.jpg");
+  background-image: url("bgimg2.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
