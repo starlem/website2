@@ -50,7 +50,7 @@ header::before {
   gap: 1rem;             /* space between heading, paragraph, button */
   align-items: center;
   justify-content: center;
-  color: white;          /* ensure text contrasts with overlay */
+  color: #FFFFFF;          /* ensure text contrasts with overlay */
 }
 
 /* subtle text shadow to improve readability on busy images */
@@ -87,7 +87,7 @@ button {
   cursor: pointer;
 }
 
-button:hover { opacity: 0.95; }
+button:hover { opacity: 0.5; }
 footer {
   margin-top: 3rem;
   padding: 1rem;
