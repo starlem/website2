@@ -94,3 +94,28 @@ footer {
   text-align: center;
   color: #777;
 }
+
+/* add near the bottom of your existing style.css */
+:root {
+  --text-light: #ffffff;
+  --text-dark: #0a0a0a;
+}
+
+/* toggled class on <html> when bg is dark */
+.bg-dark {
+  color-scheme: dark;
+}
+
+/* ensure body text follows the class */
+.bg-dark body,
+.bg-dark .header-inner,
+.bg-dark header,
+.bg-dark main,
+.bg-dark footer {
+  color: var(--text-light);
+}
+
+/* keep a smooth background transition if JS didn't set it */
+body {
+  transition: background-color 350ms ease, color 200ms ease;
+}
