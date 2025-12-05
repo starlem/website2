@@ -1,61 +1,61 @@
 // script.js
-// Option C: cycle / random background colors with persistence and contrast handling
+// Option C (fixed): cycle / random background colors and apply to full page via a CSS variable.
+// Make sure your button has id="myButton" in the HTML.
 
-const btn = document.getElementById('myButton'); // ensure your button has id="myButton"
-const target = document.body; // change to document.querySelector('header') to affect only the header
+const btn = document.getElementById('myButton');
+const root = document.documentElement; // :root for CSS variable updates
 
-// Palette: use the dark gray you chose plus a few companions
+// Palette
 const colors = ['#2F2F2F', '#1F1F1F', '#3A3A3A', '#444444', '#0B3D91', '#0366d6'];
-
 let index = Number(localStorage.getItem('bgIndex')) || 0;
 
-// Apply initial color on load (if you want to start with stored color)
+// Apply initial color on load using the CSS variable
 if (colors[index]) {
-  setColor(colors[index], false);
+  applyPageBg(colors[index], false);
 }
-
-// Smooth transition for background changes (also set in CSS is fine)
-target.style.transition = 'background-color 350ms ease, color 200ms ease';
 
 // Cycle to next color
 function cycleBackground() {
   index = (index + 1) % colors.length;
-  setColor(colors[index], true);
+  applyPageBg(colors[index], true);
   localStorage.setItem('bgIndex', String(index));
 }
 
 // Pick a random color
 function randomBackground() {
   index = Math.floor(Math.random() * colors.length);
-  setColor(colors[index], true);
+  applyPageBg(colors[index], true);
   localStorage.setItem('bgIndex', String(index));
 }
 
-// Central setter: applies color and adjusts text color for contrast
-function setColor(hex, withTransition = true) {
+// Apply color by setting a CSS variable on :root and fallback to body background
+function applyPageBg(hex, withTransition = true) {
+  // Set CSS variable
+  root.style.setProperty('--page-bg', hex);
+
+  // fallback: set body inline style (keeps compatibility)
   if (!withTransition) {
-    // briefly disable transition if caller requested no animation
-    const prev = target.style.transition;
-    target.style.transition = 'none';
+    const prev = document.body.style.transition;
+    document.body.style.transition = 'none';
     requestAnimationFrame(() => {
-      target.style.backgroundColor = hex;
-      target.style.transition = prev;
-      adjustTextColor(hex);
+      document.body.style.backgroundColor = hex;
+      document.body.style.transition = prev;
     });
   } else {
-    target.style.backgroundColor = hex;
-    adjustTextColor(hex);
+    document.body.style.backgroundColor = hex;
   }
+
+  // Optionally adjust text color for contrast site-wide
+  adjustTextColor(hex);
 }
 
-// Simple luminance-based contrast check to pick light/dark text
+// Simple luminance-based contrast check to toggle a class on <html>
 function adjustTextColor(hex) {
   const lum = relativeLuminance(hex);
-  // threshold ~0.5 is reasonable; lower lum => use light text
   if (lum < 0.5) {
-    document.documentElement.classList.add('bg-dark');
+    root.classList.add('bg-dark');
   } else {
-    document.documentElement.classList.remove('bg-dark');
+    root.classList.remove('bg-dark');
   }
 }
 
@@ -63,11 +63,9 @@ function adjustTextColor(hex) {
 function relativeLuminance(hex) {
   const rgb = hexToRgb(hex);
   if (!rgb) return 1;
-  // convert sRGB to linear RGB
   const srgb = [rgb.r, rgb.g, rgb.b].map(v => v / 255).map(c =>
     c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
   );
-  // Rec. 709 luminance
   return 0.2126 * srgb[0] + 0.7152 * srgb[1] + 0.0722 * srgb[2];
 }
 
@@ -89,14 +87,12 @@ function hexToRgb(hex) {
   return null;
 }
 
-// Event listeners: choose cycleBackground as the primary click handler (you can swap)
+// Event listeners: default click cycles; shift+click picks random
 if (btn) {
   btn.addEventListener('click', cycleBackground);
-
-  // optional: shift+click for random
   btn.addEventListener('click', (e) => {
     if (e.shiftKey) randomBackground();
   });
 } else {
-  console.warn('Button with id "myButton" not found. Add id="myButton" to your button or update selector.');
+  console.warn('Button with id "myButton" not found. Add id="myButton" or update selector.');
 }
