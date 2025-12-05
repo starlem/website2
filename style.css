@@ -2,6 +2,7 @@
   --bg: #f7f9fc;
   --accent: #0366d6;
   --text: #0a0a0a;
+  --header-overlay: rgba(0, 0, 0, 0.45);
 }
 
 html,body {
@@ -13,12 +14,62 @@ html,body {
 }
 
 header {
+  position: relative; /* needed for the pseudo-element overlay */
   background-image: url("bgimg1.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  padding: 2rem;
+  padding: 4rem 2rem;
+  min-height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-bottom: 1px solid #e6e6e6;
+}
+
+/* semi-transparent overlay so text reads well over the background image */
+header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--header-overlay);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* HEADER INNER: centers and constrains content while leaving the background full-bleed */
+.header-inner {
+  position: relative; /* sits above overlay */
+  z-index: 1;
+  width: 100%;
+  max-width: 1100px;     /* limit how wide the content can grow */
+  padding: 0 1rem;       /* horizontal breathing room on small screens */
+  text-align: center;    /* center content inside the container */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;             /* space between heading, paragraph, button */
+  align-items: center;
+  justify-content: center;
+  color: white;          /* ensure text contrasts with overlay */
+}
+
+/* subtle text shadow to improve readability on busy images */
+.header-inner h1,
+.header-inner h2,
+.header-inner p {
+  text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  margin: 0;
+}
+
+/* Make header a bit smaller on narrow screens so it doesn't dominate the viewport */
+@media (max-width: 600px) {
+  header {
+    padding: 2rem 1rem;
+    min-height: 28vh;
+  }
+  .header-inner {
+    gap: 0.75rem;
+  }
 }
 
 main {
