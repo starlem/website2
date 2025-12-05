@@ -6,7 +6,7 @@ const btn = document.getElementById('myButton');
 const root = document.documentElement; // :root for CSS variable updates
 
 // Palette
-const colors = ['#C8F7FF', '#F5C6E7', '#E6FFDA', '#D6C8FF', '#0B3D91', '#0366D6'];
+const colors = ['#E3E3FF', '#DFF2FD', '#E2FCE6', '#FCFADE', '#FFEEE2', '#FFDBDB'];
 let index = Number(localStorage.getItem('bgIndex')) || 0;
 
 // Apply initial color on load using the CSS variable
