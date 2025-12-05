@@ -28,6 +28,12 @@ function randomBackground() {
   localStorage.setItem('bgIndex', String(index));
 }
 
+// Compatibility alias: some code may call toggleDarkBackground (older versions).
+// Keep that name working by forwarding it to cycleBackground.
+function toggleDarkBackground() {
+  cycleBackground();
+}
+
 // Apply color by setting a CSS variable on :root and fallback to body background
 function applyPageBg(hex, withTransition = true) {
   // Set CSS variable
