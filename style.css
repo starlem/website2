@@ -13,7 +13,7 @@ html,body {
 }
 
 header {
-  background: white;
+  background: <img src="bgimg1.jpg" >;
   padding: 2rem;
   border-bottom: 1px solid #e6e6e6;
 }
