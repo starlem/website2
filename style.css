@@ -54,14 +54,15 @@ header::before {
   gap: 1rem;             /* space between heading, paragraph, button */
   align-items: center;
   justify-content: center;
-  color: #FFFFFF;          /* ensure text contrasts with overlay */
+  color: #FFFFFF;        /* ensure text contrasts with overlay */
 }
 
 /* subtle text shadow to improve readability on busy images */
 .header-inner h1,
 .header-inner h2,
 .header-inner p {
-  text-shadow: 0 2px 6px rgba(255,255,255,50);
+  /* Use a dark translucent shadow for white text so it reads on the image */
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
   margin: 0;
 }
 
@@ -98,17 +99,16 @@ footer {
   text-align: center;
   color: #777;
 }
-/* Use the CSS variable for the page background */
 
 /* When JS marks page bg as dark, switch text colors site-wide */
-.bg-dark {
+html.bg-dark {
   color-scheme: dark;
 }
-.bg-dark body,
-.bg-dark .header-inner,
-.bg-dark header,
-.bg-dark main,
-.bg-dark footer {
+html.bg-dark,
+html.bg-dark .header-inner,
+html.bg-dark header,
+html.bg-dark main,
+html.bg-dark footer {
   color: var(--text-light);
 }
 
@@ -117,8 +117,7 @@ main, footer, .container, .content {
   background: transparent;
 }
 
-/* If any other selectors in your CSS explicitly set background-color: white (or other),
-   either remove them or change them to use transparent or the variable:
-   background-color: var(--page-bg);
+/* If other selectors explicitly set background-color, consider changing them to use:
+     background-color: var(--page-bg);
+   or make them transparent so the page-level background shows through.
 */
-```
