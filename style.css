@@ -94,19 +94,30 @@ footer {
   text-align: center;
   color: #777;
 }
-
-/* add near the bottom of your existing style.css */
+```css
 :root {
+  --bg: #f7f9fc;
+  --accent: #0366d6;
+  --text: #0a0a0a;
+  --page-bg: var(--bg); /* page background variable we will update from JS */
   --text-light: #ffffff;
   --text-dark: #0a0a0a;
 }
 
-/* toggled class on <html> when bg is dark */
+/* Use the CSS variable for the page background */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background-color: var(--page-bg);
+  color: var(--text);
+  line-height: 1.4;
+  transition: background-color 350ms ease, color 200ms ease;
+}
+
+/* When JS marks page bg as dark, switch text colors site-wide */
 .bg-dark {
   color-scheme: dark;
 }
-
-/* ensure body text follows the class */
 .bg-dark body,
 .bg-dark .header-inner,
 .bg-dark header,
@@ -115,7 +126,13 @@ footer {
   color: var(--text-light);
 }
 
-/* keep a smooth background transition if JS didn't set it */
-body {
-  transition: background-color 350ms ease, color 200ms ease;
+/* Ensure section/main don't have opaque backgrounds unless you want them */
+main, footer, .container, .content {
+  background: transparent;
 }
+
+/* If any other selectors in your CSS explicitly set background-color: white (or other),
+   either remove them or change them to use transparent or the variable:
+   background-color: var(--page-bg);
+*/
+```
